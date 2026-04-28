@@ -1,0 +1,91 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.setup-container {
+    max-width: 800px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+
+.save-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+}
+
+.setup-card {
+    margin-bottom: 24px;
+}
+
+.setup-card__content {
+    padding: 24px 24px 0;
+}
+
+.setup-card__content h2 {
+    margin: 0 0 24px;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.field-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.field-full {
+    width: 100%;
+}
+
+.field-half {
+    flex: 1;
+}
+
+.setup-card__actions {
+    padding: 16px 24px;
+}
+
+.hint-card {
+    background-color: #fff8e1;
+}
+
+.hint-card__content {
+    padding: 16px 24px;
+}
+
+.hint-card__content h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.hint-card__content ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.hint-card__content li {
+    margin-bottom: 8px;
+}
+
+.hint-card__content code {
+    background-color: rgba(0, 0, 0, 0.06);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+    .field-row {
+        flex-direction: column;
+    }
+}

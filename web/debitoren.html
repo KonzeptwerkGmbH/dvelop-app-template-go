@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="{{.AssetBasePath}}/debitoren.css"/>
+</head>
+<body class="mdc-typography">
+
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <a href="../" class="material-icons mdc-top-app-bar__navigation-icon" aria-label="Zurück">arrow_back</a>
+            <span class="mdc-top-app-bar__title">Debitoren</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+            <a href="../bcsetup" class="material-icons mdc-top-app-bar__action-item" aria-label="Einstellungen" title="BC Einstellungen">settings</a>
+        </section>
+    </div>
+</header>
+
+<div class="mdc-top-app-bar--fixed-adjust">
+    <main class="debitoren-container">
+
+        {{if not .HasConfig}}
+        <div class="state-card mdc-card">
+            <div class="state-card__content">
+                <span class="material-icons state-icon">settings</span>
+                <h2 class="mdc-typography--headline6">Keine Verbindung konfiguriert</h2>
+                <p class="mdc-typography--body1">Bitte richten Sie zuerst die Business Central Verbindung ein.</p>
+                <a href="../bcsetup" class="mdc-button mdc-button--raised">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="material-icons mdc-button__icon">settings</span>
+                    <span class="mdc-button__label">Jetzt einrichten</span>
+                </a>
+            </div>
+        </div>
+        {{else if .Error}}
+        <div class="state-card mdc-card state-card--error">
+            <div class="state-card__content">
+                <span class="material-icons state-icon">error_outline</span>
+                <h2 class="mdc-typography--headline6">Verbindungsfehler</h2>
+                <p class="mdc-typography--body2 error-message">{{.Error}}</p>
+                <a href="../bcsetup" class="mdc-button mdc-button--raised">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="material-icons mdc-button__icon">settings</span>
+                    <span class="mdc-button__label">Einstellungen prüfen</span>
+                </a>
+            </div>
+        </div>
+        {{else if not .Debitoren}}
+        <div class="state-card mdc-card">
+            <div class="state-card__content">
+                <span class="material-icons state-icon">people_outline</span>
+                <h2 class="mdc-typography--headline6">Keine Debitoren gefunden</h2>
+                <p class="mdc-typography--body1">Im gewählten Mandanten wurden keine Kunden gefunden.</p>
+            </div>
+        </div>
+        {{else}}
+        <div class="count-bar mdc-typography--body2">
+            <span class="material-icons">people</span>
+            {{len .Debitoren}} Debitoren gefunden
+        </div>
+
+        <div class="mdc-card">
+            <table class="debitoren-table">
+                <thead>
+                    <tr>
+                        <th>Nr.</th>
+                        <th>Name</th>
+                        <th>Adresse</th>
+                        <th>Ort</th>
+                        <th>Telefon</th>
+                        <th>E-Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Debitoren}}
+                    <tr>
+                        <td class="col-no">{{.No}}</td>
+                        <td class="col-name">{{.Name}}</td>
+                        <td class="col-address">{{.Address}}</td>
+                        <td class="col-city">{{.City}}</td>
+                        <td class="col-phone">{{.Phone}}</td>
+                        <td class="col-email">
+                            {{if .Email}}
+                            <a href="mailto:{{.Email}}">{{.Email}}</a>
+                            {{end}}
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+        {{end}}
+
+    </main>
+</div>
+
+<script>
+    document.querySelectorAll('.mdc-button').forEach(el => mdc.ripple.MDCRipple.attachTo(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="{{.AssetBasePath}}/bcsetup.css"/>
+</head>
+<body class="mdc-typography">
+
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <a href="../" class="material-icons mdc-top-app-bar__navigation-icon" aria-label="Zurück">arrow_back</a>
+            <span class="mdc-top-app-bar__title">Business Central Setup</span>
+        </section>
+    </div>
+</header>
+
+<div class="mdc-top-app-bar--fixed-adjust">
+    <main class="setup-container">
+
+        {{if .Saved}}
+        <div class="save-banner">
+            <span class="material-icons">check_circle</span>
+            Einstellungen wurden gespeichert.
+        </div>
+        {{end}}
+
+        <form method="post" action="">
+            <div class="mdc-card setup-card">
+                <div class="setup-card__content">
+                    <h2 class="mdc-typography--headline6">Verbindungseinstellungen</h2>
+
+                    <div class="field-row">
+                        <div class="mdc-text-field mdc-text-field--outlined field-full">
+                            <input type="url" id="baseurl" name="baseurl" class="mdc-text-field__input"
+                                   value="{{.Config.BaseURL}}" placeholder="https://api.businesscentral.dynamics.com/v2.0/{tenantId}/{environment}">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="baseurl" class="mdc-floating-label">BC Basis-URL</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="mdc-text-field mdc-text-field--outlined field-full">
+                            <input type="text" id="mandant" name="mandant" class="mdc-text-field__input"
+                                   value="{{.Config.Mandant}}" placeholder="CRONUS AG">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="mandant" class="mdc-floating-label">Mandant (Company)</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="mdc-text-field mdc-text-field--outlined field-half">
+                            <input type="text" id="username" name="username" class="mdc-text-field__input"
+                                   value="{{.Config.Username}}" autocomplete="username">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="username" class="mdc-floating-label">Benutzername</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+                        <div class="mdc-text-field mdc-text-field--outlined field-half">
+                            <input type="password" id="password" name="password" class="mdc-text-field__input"
+                                   placeholder="{{if .Config.Password}}••••••••{{end}}" autocomplete="current-password">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="password" class="mdc-floating-label">Kennwort / API-Key</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-card__actions mdc-card__actions">
+                    <button type="submit" class="mdc-button mdc-button--raised">
+                        <span class="mdc-button__ripple"></span>
+                        <span class="material-icons mdc-button__icon">save</span>
+                        <span class="mdc-button__label">Speichern</span>
+                    </button>
+                    <a href="../debitoren" class="mdc-button">
+                        <span class="mdc-button__ripple"></span>
+                        <span class="material-icons mdc-button__icon">people</span>
+                        <span class="mdc-button__label">Debitoren anzeigen</span>
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <div class="hint-card mdc-card">
+            <div class="hint-card__content">
+                <h3 class="mdc-typography--subtitle1">
+                    <span class="material-icons">help_outline</span>
+                    Hinweise zur BC-URL
+                </h3>
+                <ul class="mdc-typography--body2">
+                    <li><strong>Business Central Cloud:</strong><br>
+                        <code>https://api.businesscentral.dynamics.com/v2.0/{AAD-Tenant-ID}/{Umgebung}</code>
+                    </li>
+                    <li><strong>Business Central On-Premise:</strong><br>
+                        <code>http(s)://{Server}/{Instanz}</code>
+                    </li>
+                </ul>
+                <p class="mdc-typography--body2">Das Kennwort-Feld bleibt leer wenn kein neues Kennwort gesetzt werden soll.</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    document.querySelectorAll('.mdc-text-field').forEach(el => mdc.textField.MDCTextField.attachTo(el));
+    document.querySelectorAll('.mdc-button').forEach(el => mdc.ripple.MDCRipple.attachTo(el));
+
+    // Keep existing password if field is left empty
+    const passwordInput = document.getElementById('password');
+    const form = passwordInput.closest('form');
+    form.addEventListener('submit', function() {
+        if (passwordInput.value === '') {
+            passwordInput.disabled = true;
+        }
+    });
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ import (
 	"github.com/d-velop/dvelop-app-template-go/domain/acceptVacationRequest"
 	"github.com/d-velop/dvelop-app-template-go/domain/applyForVacation"
 	"github.com/d-velop/dvelop-app-template-go/domain/cancelVacation"
+	"github.com/d-velop/dvelop-app-template-go/domain/plugins/bc"
 	"github.com/d-velop/dvelop-app-template-go/domain/plugins/conf"
 	"github.com/d-velop/dvelop-app-template-go/domain/plugins/gui/assets"
 	"github.com/d-velop/dvelop-app-template-go/domain/plugins/gui/templates"
@@ -42,6 +43,9 @@ func main() {
 		rejectVacationRequestService,
 		acceptVacationRequestService)
 
+	bcConfigStore := memory.NewBcConfigStore()
+	bcHandler := http.NewBcHandler(conf.AssetBasePath(), templates.Render, bcConfigStore, bc.NewClient())
+
 	logError := func(ctx context.Context, logmessage string) { log.Error(ctx, logmessage) }
 	logInfo := func(ctx context.Context, logmessage string) { log.Info(ctx, logmessage) }
 
@@ -60,6 +64,8 @@ func main() {
 		{Pattern: conf.BasePath + "/vacationrequest/", Handler: vacationRequestHandler.Handle(conf.BasePath + "/vacationrequest/")},
 		{Pattern: conf.BasePath + "/features", Handler: http.HandleFeatures()},
 		{Pattern: conf.BasePath + "/idpdemo", Handler: authenticate(http.HandleIdpDemo(conf.AssetBasePath(), templates.Render))},
+		{Pattern: conf.BasePath + "/bcsetup", Handler: bcHandler.HandleSetup()},
+		{Pattern: conf.BasePath + "/debitoren", Handler: bcHandler.HandleDebitoren()},
 	}
 
 	socket, err := net.Listen("tcp", "localhost:5000")
