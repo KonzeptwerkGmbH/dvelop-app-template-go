@@ -68,7 +68,11 @@ func main() {
 		{Pattern: conf.BasePath + "/debitoren", Handler: bcHandler.HandleDebitoren()},
 	}
 
-	socket, err := net.Listen("tcp", "localhost:5000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	socket, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		log.Error(context.Background(), err)
 		os.Exit(1)
